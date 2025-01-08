@@ -1,6 +1,6 @@
 <?php
 // Include database connection
-include "db_connection.php"; 
+include "../Layout/db_connection.php";
 
 // Initialize variables
 $message = "";

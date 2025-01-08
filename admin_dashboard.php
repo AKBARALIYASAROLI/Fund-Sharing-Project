@@ -1,5 +1,5 @@
 <?php
-include "Add_member/db_connection.php";
+include "Layout/db_connection.php";
 session_start();
 
 // Check if the admin is logged in
@@ -27,10 +27,10 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             <a href="home.php">Home</a>
             <a href="admin_dashboard.php">Dashboard</a>
             <a href="Add_member/add_members.php">Add Members</a>
+            <a href="Borrowed/borrowed_amount.php">Borrowed Amount</a>
             <a href="logout.php">Logout</a>
         </div>
     </div>
-
     <!-- Dashboard Content -->
     <div class="dashboard">
         <h1>Welcome, Admin!</h1>

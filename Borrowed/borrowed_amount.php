@@ -8,8 +8,8 @@ if (!isset($_SESSION['admin_logged_in'])) {
 }
 
 // Include database connection
-// include "borrowed.php";
-include "../Add_member/member.php";
+include "borrowed.php";
+// include "../Layout/db_connection.php";
 
 ?>
 
@@ -24,18 +24,7 @@ include "../Add_member/member.php";
 </head>
 <body>
     <!-- Navbar -->
-    <div class="navbar">
-        <div class="logo">
-            <h2>Admin Panel</h2>
-        </div>
-        <div class="links">
-            <a href="home.php">Home</a>
-            <a href="../admin_dashboard.php">Dashboard</a>
-            <a href="../Add_member/add_members.php">Add Members</a>
-            <a href="../Borrowed_amount.php">Borrowed Amount</a>
-            <a href="../logout.php">Logout</a>
-        </div>
-    </div>
+  <?php include "../Layout/Nav.php"; ?>
 
     <h1>Borrowed Amount</h1>
     <p style="color: green;"><?php echo htmlspecialchars($message); ?></p>
@@ -57,11 +46,18 @@ include "../Add_member/member.php";
                 <div class="form-row">
                     <select id="name" name="name" required>
                         <option value="">Select Name</option>
-                        <?php foreach ($members as $member): ?>
-                            <option value="<?php echo htmlspecialchars($member['names']); ?>">
-                                <?php echo htmlspecialchars($member['names']); ?>
-                            </option>
-                        <?php endforeach; ?>
+                        <?php
+                        $sql="SELECT id,names FROM add_members";
+                        $result=$conn->query($sql);
+                        // print_r($result);
+                        if($result && $result->num_rows > 0){
+                            while($row = $result->fetch_assoc()){
+                                echo "<option value='" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['names']) . "</option>";
+                            }
+                        } else{
+                            echo "<option value =''>Not fount</option>";
+                        }
+                        ?>
                     </select>
                 </div>
 
@@ -98,25 +94,25 @@ include "../Add_member/member.php";
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($members as $index => $member): ?>
+                <?php foreach ($borrowedMembers as $index => $borrowedMembers): ?>
                     <tr>
                         <td><?php echo $index + 1; ?></td>
-                        <td><?php echo htmlspecialchars($member['date']); ?></td>
-                        <td><?php echo htmlspecialchars($member['names']); ?></td>
-                        <td><?php echo htmlspecialchars($member['borrowed_amount']); ?></td>
-                        <td><?php echo htmlspecialchars($member['borrowed_amount'] * 0.02); ?></td>
+                        <td><?php echo htmlspecialchars($borrowedMembers['Dates']); ?></td>
+                        <td><?php echo htmlspecialchars($borrowedMembers['names']); ?></td>
+                        <td><?php echo htmlspecialchars($borrowedMembers['borrowed_amount']); ?></td>
+                        <td><?php echo htmlspecialchars($borrowedMembers['borrowed_amount'] * 0.02); ?></td>
                         <td>
                             <button onclick="editMember(
-                                '<?php echo $member['id']; ?>', 
-                                '<?php echo htmlspecialchars($member['names']); ?>', 
-                                '<?php echo htmlspecialchars($member['date']); ?>', 
-                                '<?php echo htmlspecialchars($member['borrowed_amount']); ?>'
+                                '<?php echo $borrowedMembers['id']; ?>', 
+                                '<?php echo htmlspecialchars($borrowedMembers['names']); ?>', 
+                                '<?php echo htmlspecialchars($borrowedMembers['Dates']); ?>', 
+                                '<?php echo htmlspecialchars($borrowedMembers['borrowed_amount']); ?>'
                             )">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
                             <form method="POST" action="" style="display: inline;">
                                 <input type="hidden" name="action" value="delete">
-                                <input type="hidden" name="id" value="<?php echo $member['id']; ?>">
+                                <input type="hidden" name="id" value="<?php echo $borrowedMembers['id']; ?>">
                                 <button type="submit"><i class="fas fa-trash-alt"></i> Delete</button>
                             </form>
                         </td>
@@ -126,6 +122,6 @@ include "../Add_member/member.php";
         </table>
     </div>
 
-    <script src="borrowed.js"></script>
+    <script src='../Script/borrowed.js'></script>
 </body>
 </html>

@@ -7,7 +7,8 @@ if (!isset($_SESSION['admin_logged_in'])) {
     header("Location: ../admin_login.php");
     exit();
 }
-
+?>
+<?php
 include "member.php";
 ?>
 
@@ -21,20 +22,8 @@ include "member.php";
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Navbar -->
-    <div class="navbar">
-        <div class="logo">
-            <h2>Admin Panel</h2>
-        </div>
-        <div class="links">
-            <a href="home.php">Home</a>
-            <a href="../admin_dashboard.php">Dashboard</a>
-            <a href="add_members.php">Add Members</a>
-            <a href="../Borrowed/borrowed_amount.php">Borrowed Amount</a>
-            <a href="../logout.php">Logout</a>
-        </div>
-    </div>
 
+<?php include "../Layout/Nav.php"; ?>
     <h1>Manage Members</h1>
     
     <p style="color: green;"><?php echo $message; ?></p>
@@ -54,9 +43,12 @@ include "member.php";
         <input type="hidden" name="id" id="id">
 
         <div class="form-row">
-          <input type="text" name="name" id="name" placeholder="Name" required>
-          <input type="text" name="shares" id="shares" placeholder="Shares" required>
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" placeholder="Name" required>
+            <label for="shares">Shares</label>
+            <input type="text" name="shares" id="shares" placeholder="Shares" required>
         </div>
+
 
         <button type="submit">Submit</button>
         <button id="closePopup" class="close-popup">Close</button>
@@ -106,6 +98,6 @@ include "member.php";
         </tbody>
     </table>
 </div>
-    <script src='add_member.js'></script>
+    <script src='../Script/add_member.js'></script>
 </body>
 </html>
